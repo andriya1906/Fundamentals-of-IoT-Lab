@@ -5,7 +5,7 @@ This repository contains the Embedded C programs and laboratory experiments comp
 ## Team Members
 - A Andriya (25011102003)
 - A S Chinmayi Devi (25011102004)
-- Abinaya ()
+- Abinaya K (25011102007)
 
 ## Course Details
 - **Course:** Fundamentals of IoT (25CS2741)
