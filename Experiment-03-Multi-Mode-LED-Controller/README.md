@@ -75,6 +75,6 @@ All four LEDs blink together.
 ## Files
 
 - `main.c` – Embedded C source code
-- `Experiment3.hex` – Compiled HEX file
+- `main.hex` – Compiled HEX file
 
 ---
