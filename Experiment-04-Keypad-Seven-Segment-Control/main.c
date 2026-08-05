@@ -1,8 +1,8 @@
 #include <reg51.h>
 
-// ---------------------------
-// Keypad Connections (Port 2)
-// ---------------------------
+/* ---------------- Pin Definitions ---------------- */
+
+// Matrix Keypad Connections (Rows and Columns)
 sbit button_7 = P2^7;
 sbit button_6 = P2^6;
 sbit button_5 = P2^5;
@@ -15,17 +15,18 @@ sbit button_0 = P2^0;
 // Decimal Point of Seven Segment Display
 sbit DP = P0^7;
 
-// LED Connections (Port 3)
+// LED Connections
 sbit led1 = P3^0;
 sbit led2 = P3^1;
 sbit led3 = P3^2;
 sbit led4 = P3^3;
 
-// Stores the currently pressed key
-// 10 indicates that no key is pressed
+// Stores the currently pressed key (10 = No key pressed)
 unsigned char key = 10;
 
-// Function Prototypes
+
+/* ---------------- Function Prototypes ---------------- */
+
 void delay(void);
 void keypad_scan(void);
 void display_digit(void);
@@ -36,11 +37,15 @@ void binary_counter(void);
 void blink_all(void);
 void led_off(void);
 
-// -------------------------------------------------------
-// Software delay with continuous keypad polling.
-// If a different key is detected during the delay,
-// the function exits immediately for quick response.
-// -------------------------------------------------------
+
+/* -------------------------------------------------------
+   Delay Function
+
+   Creates a software delay while continuously scanning
+   the keypad. If a new key is detected during the delay,
+   the function exits immediately, allowing instant mode
+   switching.
+--------------------------------------------------------*/
 void delay(void)
 {
     int i, j;
@@ -53,23 +58,24 @@ void delay(void)
 
             keypad_scan();
 
-            // Exit delay if the pressed key changes
             if(key != temp)
                 return;
         }
     }
 }
 
-// -------------------------------------------------------
-// Scans the 4x4 keypad by activating one row at a time
-// and checking the corresponding column inputs.
-// Updates the global variable 'key' with the detected key.
-// -------------------------------------------------------
+
+/* -------------------------------------------------------
+   Keypad Scan Function
+
+   Scans the matrix keypad row by row and identifies the
+   pressed key (0-9).
+--------------------------------------------------------*/
 void keypad_scan(void)
 {
     unsigned char newkey = 10;
 
-    // Scan Row 1
+    // Scan First Row
     button_7 = 0;
     button_6 = 1;
     button_5 = 1;
@@ -88,7 +94,7 @@ void keypad_scan(void)
     else if(button_0 == 0)
         key = '4';
 
-    // Scan Row 2
+    // Scan Second Row
     if(newkey == 10)
     {
         button_7 = 1;
@@ -105,7 +111,7 @@ void keypad_scan(void)
             key = '8';
     }
 
-    // Scan Row 3
+    // Scan Third Row
     if(newkey == 10)
     {
         button_7 = 1;
@@ -118,186 +124,208 @@ void keypad_scan(void)
             key = '0';
     }
 
+    // Update current key if a valid key is detected
     if(newkey != 10)
         newkey = key;
 }
 
-// -------------------------------------------------------
-// Displays the pressed key on the seven-segment display
-// using common hexadecimal segment codes.
-// -------------------------------------------------------
+
+/* -------------------------------------------------------
+   Seven Segment Display Function
+
+   Displays the pressed digit (0-9) on the seven segment
+   display.
+--------------------------------------------------------*/
 void display_digit(void)
 {
-    if(key=='0') { P0=0x3F; return; }
-    if(key=='1') { P0=0x06; return; }
-    if(key=='2') { P0=0x5B; return; }
-    if(key=='3') { P0=0x4F; return; }
-    if(key=='4') { P0=0x66; return; }
-    if(key=='5') { P0=0x6D; return; }
-    if(key=='6') { P0=0x7D; return; }
-    if(key=='7') { P0=0x07; return; }
-    if(key=='8') { P0=0x7F; return; }
-    if(key=='9') { P0=0x6F; return; }
+    if(key == '0') { P0 = 0x3F; return; }
+    if(key == '1') { P0 = 0x06; return; }
+    if(key == '2') { P0 = 0x5B; return; }
+    if(key == '3') { P0 = 0x4F; return; }
+    if(key == '4') { P0 = 0x66; return; }
+    if(key == '5') { P0 = 0x6D; return; }
+    if(key == '6') { P0 = 0x7D; return; }
+    if(key == '7') { P0 = 0x07; return; }
+    if(key == '8') { P0 = 0x7F; return; }
+    if(key == '9') { P0 = 0x6F; return; }
 }
 
-// -------------------------------------------------------
-// Controls individual LEDs for keys 1-4.
-// Only the corresponding LED remains ON.
-// -------------------------------------------------------
+
+/* -------------------------------------------------------
+   Individual LED Control (Keys 1-4)
+
+   Turns ON the corresponding LED while turning OFF the
+   remaining LEDs.
+--------------------------------------------------------*/
 void led_control(void)
 {
-    if(key=='1')
+    if(key == '1')
     {
-        led1=1;
-        led2=led3=led4=0;
+        led1 = 1;
+        led2 = led3 = led4 = 0;
         delay();
-        if(key!='1') return;
+        if(key != '1') return;
     }
 
-    else if(key=='2')
+    else if(key == '2')
     {
-        led2=1;
-        led1=led3=led4=0;
+        led2 = 1;
+        led1 = led3 = led4 = 0;
         delay();
-        if(key!='2') return;
+        if(key != '2') return;
     }
 
-    else if(key=='3')
+    else if(key == '3')
     {
-        led3=1;
-        led1=led2=led4=0;
+        led3 = 1;
+        led1 = led2 = led4 = 0;
         delay();
-        if(key!='3') return;
+        if(key != '3') return;
     }
 
-    else if(key=='4')
+    else if(key == '4')
     {
-        led4=1;
-        led1=led2=led3=0;
+        led4 = 1;
+        led1 = led2 = led3 = 0;
         delay();
-        if(key!='4') return;
-    }
-}
-
-// -------------------------------------------------------
-// Mode 1 - Running LED Pattern
-// LEDs glow sequentially from LED1 to LED4.
-// -------------------------------------------------------
-void running_led()
-{
-    while(key=='5')
-    {
-        led2=led3=led4=0;
-        led1=1;
-        delay();
-        if(key!='5') break;
-
-        led1=led3=led4=0;
-        led2=1;
-        delay();
-        if(key!='5') break;
-
-        led2=led1=led4=0;
-        led3=1;
-        delay();
-        if(key!='5') break;
-
-        led2=led3=led1=0;
-        led4=1;
-        delay();
-        if(key!='5') break;
+        if(key != '4') return;
     }
 }
 
-// -------------------------------------------------------
-// Mode 2 - Alternating LED Pattern
-// Displays 1010 and 0101 alternately.
-// -------------------------------------------------------
-void alternative_led()
-{
-    while(key=='6')
-    {
-        led1=led3=0;
-        led2=led4=1;
-        delay();
-        if(key!='6') break;
 
-        led1=led3=1;
-        led2=led4=0;
+/* -------------------------------------------------------
+   Running LED Pattern (Key 5)
+
+   LEDs glow one after another in sequence until another
+   key is pressed.
+--------------------------------------------------------*/
+void running_led(void)
+{
+    while(key == '5')
+    {
+        led2 = led3 = led4 = 0;
+        led1 = 1;
         delay();
-        if(key!='6') break;
+        if(key != '5') break;
+
+        led1 = led3 = led4 = 0;
+        led2 = 1;
+        delay();
+        if(key != '5') break;
+
+        led2 = led1 = led4 = 0;
+        led3 = 1;
+        delay();
+        if(key != '5') break;
+
+        led2 = led3 = led1 = 0;
+        led4 = 1;
+        delay();
+        if(key != '5') break;
     }
 }
 
-// -------------------------------------------------------
-// Mode 3 - 4-bit Binary Counter
-// Counts from 0 to 15 using the four LEDs.
-// -------------------------------------------------------
-void binary_counter()
+
+/* -------------------------------------------------------
+   Alternate LED Pattern (Key 6)
+
+   Alternates between LED pairs (1 & 3) and (2 & 4).
+--------------------------------------------------------*/
+void alternative_led(void)
 {
-    while(key=='7')
+    while(key == '6')
+    {
+        led1 = led3 = 0;
+        led2 = led4 = 1;
+        delay();
+        if(key != '6') break;
+
+        led1 = led3 = 1;
+        led2 = led4 = 0;
+        delay();
+        if(key != '6') break;
+    }
+}
+
+
+/* -------------------------------------------------------
+   Binary Counter (Key 7)
+
+   Displays binary count from 0 to 15 using four LEDs.
+--------------------------------------------------------*/
+void binary_counter(void)
+{
+    while(key == '7')
     {
         int i;
 
-        for(i=0; i<16; i++)
+        for(i = 0; i < 16; i++)
         {
-            P3=i;
+            P3 = i;
             delay();
 
-            if(key!='7')
+            if(key != '7')
                 return;
         }
     }
 }
 
-// -------------------------------------------------------
-// Mode 4 - Blink All LEDs
-// Turns all LEDs ON and OFF repeatedly.
-// -------------------------------------------------------
-void blink_all()
-{
-    while(key=='8')
-    {
-        led1=led2=led3=led4=1;
-        delay();
-        if(key!='8') return;
 
-        led1=led2=led3=led4=0;
+/* -------------------------------------------------------
+   Blink All LEDs (Key 8)
+
+   Turns all LEDs ON and OFF repeatedly.
+--------------------------------------------------------*/
+void blink_all(void)
+{
+    while(key == '8')
+    {
+        led1 = led2 = led3 = led4 = 1;
         delay();
-        if(key!='8') return;
+        if(key != '8') return;
+
+        led1 = led2 = led3 = led4 = 0;
+        delay();
+        if(key != '8') return;
     }
 }
 
-// -------------------------------------------------------
-// Turns OFF all LEDs while key 9 is selected.
-// -------------------------------------------------------
-void led_off()
+
+/* -------------------------------------------------------
+   LED OFF Mode (Key 9)
+
+   Turns OFF all LEDs until another key is pressed.
+--------------------------------------------------------*/
+void led_off(void)
 {
-    while(key=='9')
+    while(key == '9')
     {
-        led1=led2=led3=led4=0;
+        led1 = led2 = led3 = led4 = 0;
         delay();
 
-        if(key!='9')
+        if(key != '9')
             return;
     }
 }
 
-// -------------------------------------------------------
-// Main Function
-// Continuously scans the keypad, updates the display,
-// and executes the selected LED operation.
-// -------------------------------------------------------
-void main()
+
+/* -------------------------------------------------------
+   Main Function
+
+   Continuously scans the keypad, displays the pressed
+   digit on the seven segment display and executes the
+   corresponding LED mode.
+--------------------------------------------------------*/
+void main(void)
 {
-    // Initialize LEDs and seven-segment display
-    led1=led2=led3=led4=0;
-    P0=0;
+    // Initialize LEDs and Seven Segment Display
+    led1 = led2 = led3 = led4 = 0;
+    P0 = 0;
 
     while(1)
     {
         // Wait until a valid key is pressed
-        while(key==10)
+        while(key == 10)
         {
             keypad_scan();
         }
@@ -305,12 +333,21 @@ void main()
         // Display the pressed key
         display_digit();
 
-        // Execute the corresponding operation
+        // Execute the selected mode
         switch(key)
         {
             case '1':
+                led_control();
+                break;
+
             case '2':
+                led_control();
+                break;
+
             case '3':
+                led_control();
+                break;
+
             case '4':
                 led_control();
                 break;
@@ -336,10 +373,9 @@ void main()
                 break;
 
             case '0':
-                // Reset the system
-                key=10;
-                led1=led2=led3=led4=0;
-                P0=0x3F;
+                key = 10;
+                led1 = led2 = led3 = led4 = 0;
+                P0 = 0x3F;
                 break;
 
             default:
