@@ -44,4 +44,4 @@ Design and implement a Human-Machine Interface (HMI) using the AT89S52 microcont
 ## Files
 
 - `main.c` – Embedded C source code
-- `main.hex` – Compiled HEX file (optional)
+- `main.hex` – Compiled HEX file
