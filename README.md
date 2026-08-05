@@ -20,3 +20,4 @@ This repository contains the Embedded C programs and laboratory experiments comp
 - Experiment 1 - 
 - Experiment 2 - 
 - Experiment 3 - Multi-Mode LED Pattern Generator using GPIO and Push Button
+- Experiment 4 - Human-Machine Interface using Matrix Keypad, LEDs, and Seven-Segment Display
