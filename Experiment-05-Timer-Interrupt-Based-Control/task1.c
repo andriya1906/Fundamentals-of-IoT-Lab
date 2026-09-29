@@ -3,7 +3,7 @@
 int count=0;
 sbit led=P2^0;
 
-void timer0_ISR(){
+void toggle_led(){
 	led=!led;
 }
 
@@ -15,7 +15,7 @@ void main() {
 	while(1) {
 		if(TF0==1) {
 			if(count==500) {
-				timer0_ISR();
+				toggle_led();
 				count=0;
 			}
 			else count++;
