@@ -7,8 +7,12 @@ Interface a push-button switch and LED with the STM32F103C8T6 Blue Pill developm
 ## Hardware Used
 
 * STM32F103C8T6 Blue Pill Development Board
+* ST-Link
 * Push-Button Switch
 * LED
+* Resistor
+* Jumper Wires
+* Bread Board
 
 ## Software Used
 
