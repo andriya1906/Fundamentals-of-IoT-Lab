@@ -32,8 +32,6 @@ This repository contains the Embedded C programs and laboratory experiments comp
 
 ## Experiments
 
-* [Experiment 1](./Experiment-01-):
-* [Experiment 2](./Experiment-02-):
 * [Experiment 3](./Experiment-03-Multi-Mode-LED-Controller/): Multi-Mode LED Pattern Generator using GPIO and Push Button
 * [Experiment 4](./Experiment-04-Keypad-Seven-Segment-Control/): Human-Machine Interface using Matrix Keypad, LEDs, and Seven-Segment Display
 * [Experiment 5](./Experiment-05-Hardware-Timer-LED-PWM-Stepper/): Hardware Timer-Based LED, PWM, and Stepper Motor Control
